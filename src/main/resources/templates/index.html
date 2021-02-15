@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air quality App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<style>
+
+    body  {
+        background-image: url("/images/background.jpg");
+    }
+
+    .date {
+        background: whitesmoke;
+        opacity: 0.6;
+    }
+
+    .no-data {
+        background: lightgray;
+        opacity: 0.6;
+    }
+
+    .very-good {
+        background: green;
+        opacity: 0.6;
+    }
+    .good {
+        background: lightgreen;
+        opacity: 0.6;
+    }
+    .moderate {
+        background: lightblue;
+        opacity: 0.6;
+    }
+    .sufficient {
+        background: lightyellow;
+        opacity: 0.6;
+    }
+    .bad {
+        background: lightcoral;
+        opacity: 0.6;
+    }
+    .very-bad {
+        background: red;
+        opacity: 0.6;
+    }
+
+
+
+</style>
+<body>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1>
+                    Air quality App
+                </h1>
+            </div>
+        </div>
+
+
+
+        <select class="form-control" id="select_city" style="text-align-last: center;">
+            <option disabled selected>Wybierz miejsce pomiarowe</option>
+            <option th:each="station: ${stations}" th:value="${station.getId()}" th:text="${station.getFullAddress()}"></option>
+        </select>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="mainTable">
+                <tr>
+                    <th>Data i godzina</th>
+                    <th>tlenek węgla [µg/m3]</th>
+                    <th>dwutlenek azotu [µg/m3]</th>
+                    <th>ozon [µg/m3]</th>
+                    <th>pył zawieszony PM10 [µg/m3]</th>
+                    <th>dwutlenek siarki [µg/m3]</th>
+                    <th>benzen [µg/m3]</th>
+                    <th>pył zawieszony PM2.5 [µg/m3]</th>
+                </tr>
+                <!--Data from javascript-->
+            </table>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="title">
+                    Jak liczona jest wartość polskiego indeksu jakości powietrza
+                </h2>
+                <p>
+                    Tabela zakresów (średnie 1-godzinne) przedstawiona poniżej, prezentuje jak określane są indeksy indywidualne dla poszczególnych zanieczyszczeń<strong>. Indeks ogólny </strong>(polski indeks jakości powietrza)<strong> przyjmuje wartość najgorszego indeksu indywidualnego</strong> spośród zanieczyszczeń mierzonych na stacji.
+                </p>
+            </div>
+        </div>
+
+
+
+
+        <div class="table-responsive">
+            <table class="table table-hover table-sm table-bordered">
+                <tr>
+                    <th scope="row">Indeks jakości powietrza</th>
+                    <th scope="col">PM10 [µg/m3]</th>
+                    <th scope="col">PM2,5 [µg/m3]</th>
+                    <th scope="col">O3 [µg/m3]</th>
+                    <th scope="col">NO2 [µg/m3]</th>
+                    <th scope="col">SO2 [µg/m3]</th>
+                    <th scope="col">C6H6 [µg/m3]</th>
+                    <th scope="col">CO [µg/m3]</th>
+                </tr>
+                <tr>
+                    <td class="very-good"><strong>Bardzo dobry</strong></td>
+                    <td>0 - 20</td>
+                    <td>0-13</td>
+                    <td>0 - 70</td>
+                    <td>0 - 40</td>
+                    <td>0 - 50</td>
+                    <td>0 - 6</td>
+                    <td>0 - 3 tys.</td>
+                </tr>
+                <tr>
+                    <td class="good"><strong>Dobry</strong></td>
+                    <td>20,1 - 50</td>
+                    <td>13,1 - 35</td>
+                    <td>70,1 - 120</td>
+                    <td>40,1 - 100</td>
+                    <td>50,1 - 100</td>
+                    <td>6,1 - 11</td>
+                    <td>3,1 - 7 tys.</td>
+                </tr>
+                <tr>
+                    <td class="moderate"><strong>Umiarkowany</strong></td>
+                    <td>50,1 - 80</td>
+                    <td>35,1 - 55</td>
+                    <td>120,1 - 150</td>
+                    <td>100,1 - 150</td>
+                    <td>100,1 - 200</td>
+                    <td>11,1 - 16</td>
+                    <td>7,1 - 11 tys.</td>
+                </tr>
+                <tr>
+                    <td class="sufficient"><strong>Dostateczny</strong></td>
+                    <td>80,1 - 110</td>
+                    <td>55,1 - 75</td>
+                    <td>150,1 - 180</td>
+                    <td>150,1 - 200</td>
+                    <td>200,1 - 350</td>
+                    <td>16,1 - 21</td>
+                    <td>11,1 - 15 tys.</td>
+                </tr>
+                <tr>
+                    <td class="bad"><strong>Zły</strong></td>
+                    <td>110,1 - 150</td>
+                    <td>75,1 - 110</td>
+                    <td>180,1 - 240</td>
+                    <td>200,1 - 400</td>
+                    <td>350,1 - 500</td>
+                    <td>21,1 - 51</td>
+                    <td>15,1 - 21 tys.</td>
+                </tr>
+                <tr>
+                    <td class="very-bad"><strong>Bardzo zły</strong></td>
+                    <td>&gt; 150</td>
+                    <td>&gt; 110</td>
+                    <td>&gt; 240</td>
+                    <td>&gt; 400</td>
+                    <td>&gt; 500</td>
+                    <td>&gt; 51</td>
+                    <td>&gt; 21 tys.</td>
+                </tr>
+            </table>
+        </div>
+
+
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/javascript/main.js"></script>
+
+</body>
+</html>
